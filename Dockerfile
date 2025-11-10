@@ -35,8 +35,9 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+# 本番アセットを先にプリコンパイル（ダミーキー）
 RUN chmod +x bin/rails
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 
 # Final stage for app image
@@ -61,4 +62,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+
+# ★起動時：本番DBへ migrate → Puma 起動
+CMD ["bash","-lc","bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"]
