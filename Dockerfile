@@ -58,10 +58,9 @@ RUN useradd rails --create-home --shell /bin/bash && \
 USER rails:rails
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 
 # ★起動時：本番DBへ migrate → Puma 起動
-CMD ["bash","-lc","bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"]
+CMD ["bash","-lc","bundle exec rails db:migrate && exec bundle exec puma -C config/puma.rb"]
