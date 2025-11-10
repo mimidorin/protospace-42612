@@ -6,6 +6,7 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
 WORKDIR /rails
+ENV PATH="/usr/local/bundle/bin:${PATH}"
 
 # Set production environment
 ENV RAILS_ENV="production" \
