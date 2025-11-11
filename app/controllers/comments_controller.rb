@@ -16,3 +16,4 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:content).merge(user_id: current_user.id, prototype_id: params[:prototype_id])
   end
 end
+
